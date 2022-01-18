@@ -1,0 +1,199 @@
+1) tofee problem-
+
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+void swap(long long* a, long long* b)  //swap function for swapping two numbers
+{
+    long long t = *a;
+    *a = *b;
+    *b = t;
+}
+ 
+/* This function takes last element as pivot, places
+   the pivot element at its correct position in sorted
+    array, and places all smaller to left of pivot and
+    all greater elements to right of pivot */
+long long partition (long long arr[], long long low, long long high)
+{
+    long long pivot = arr[high];    
+    long long i = (low - 1);  //long long is used to store elements of larger size
+ 
+    for (long long j = low; j <= high- 1; j++)
+    {
+        
+        if (arr[j] <= pivot)
+        {
+            i++;              // increment index of smaller element
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+ 
+//function that implements QuickSort
+void quickSort(long long arr[], long long low, long long high)
+{
+    if (low < high)
+    {
+        //pi is partitioning index
+        long long pi = partition(arr, low, high);
+       
+        //sort elements before and after partition
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    
+    long long N,M,i,j,t,s=0,count=0;
+    cin>>N>>M;
+    long long *a=new long long[N]; //array of size N
+    for(i=0;i<N;i++)
+        cin>>a[i];
+    quickSort(a,0,N-1);   //calling quickSort function
+  
+    for(i=0;i<N;i++)
+    {
+        s+=a[i];           
+        if(s>M)          //checking if sum is greater than M
+            break;
+        count++;        //increment count
+    }
+    cout<<count;
+    return 0;
+}
+
+
+2) Button factory-
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+
+int main() {
+   
+    int P,Q,R,S;
+    cin>>P>>Q>>R>>S;
+   
+    if(R>=P && R<=Q)    //if R is in range of P and Q
+    {   if(Q-R <= S-R)  //checking if S is in range of P and Q
+        cout<<Q-R;
+        else
+            cout<<S-R;
+    }
+    else if(P>=R && P<=S) //if P is in range of R and S
+    {
+      if(S-P <= Q-P)       //checking if Q is in range of R and S
+          cout<<S-P;
+        else
+            cout<<Q-P;
+    }
+      else
+          cout<<"0";   //0  if any condition is not ture
+    return 0;
+}
+
+
+3) Lazy lad-
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+
+int main() {
+     int q,i,t[100];     //t[100] array is to store no. of complete rows for each room
+    long long a,s=0,count=0,j;
+    cin>>q;
+    for(i=0;i<q;i++)      //loop for q rooms
+    {   count=0;
+        s=0;
+        cin>>a;
+        for(j=1;;j++)
+        {
+            s+=j;
+            if(s>a)
+                break;
+            count++;
+        }
+       t[i]=count;    //assigning no. of complete rows
+    }
+    for(i=0;i<q;i++)
+    {
+        cout<<t[i]<<endl;
+    }
+    return 0;
+}
+
+
+4) Harsh prime-
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <cstring>      //for using memset() function
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+
+int primecheck(int n,int *a)
+{
+    int j=0;
+    bool prime[n + 1];
+    memset(prime, true, sizeof(prime)); //set all elements as ture
+
+    for (int p = 2; p * p <= n; p++)
+    {
+        
+        if (prime[p] == true) 
+        {
+            /*Update all multiples of p greater than or
+              equal to the square of it numbers which are multiple 
+              of p and are less than p^2 are already been marked. */
+            
+            for (int i = p * p; i <= n; i += p)
+                prime[i] = false;
+        }
+    }
+
+    for (int p = 2; p <= n; p++)
+        if (prime[p])
+            a[j++]=p;       //assigning prime numbers to array
+    return j;
+}
+
+int main() {
+   int n,i,j,k,x,a[170],count=0;
+    cin>>n>>x;
+
+    j=primecheck(n,a);    //store size of array including prime numbers
+    for(i=2;i<n;i++)
+    {   //check if two consecutive prime numbers can make sum as another prime number
+        for(k=i+2;k<j;k++)
+        {
+        if((a[i]+a[i+1]+1)==a[k])
+        {
+            count++;
+            break;
+        }
+        }
+        
+    }
+    if(count>=x)
+        cout<<"YES";
+    else
+        cout<<"NO";
+    return 0;
+}
