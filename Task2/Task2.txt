@@ -1,67 +1,48 @@
 1) Weird Letter-
+
 #include<bits/stdc++.h>
 
 using namespace std;
 
-#pragma GCC optimize("Ofast,no-stack-protector")
-#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
-#pragma GCC optimize("unroll-loops")
-
-/// Typedef
-typedef long long ll;
-
-#define sc1(a) scanf("%lld",&a)
-#define sc2(a,b) scanf("%lld %lld",&a,&b)
-
-#define pf1(a) printf("%lld\n",a)
-#define pf2(a,b) printf("%lld %lld\n",a,b)
-
-#define mx 100007
-#define mod 100000007
-#define PI acos(-1.0)
-
-#define size1 12
-#define pb push_back
-
-
 int main()
 {
 
-    ll k, prime, m, tc, num, t = 4;
+    long long k, prime, m, tc, num, t = 4;
 
-    sc1(tc);
+    cin>>tc;
 
     while (tc--){
         string arr, brr;
         cin >> arr >> brr;
 
-        vector <pair<char, ll> > s, t;
+        vector <pair<char, long long>> s, t; //making pair for two data types
 
-        ll cnt = 1;
-        for(ll i = 0; i < arr.size(); i++){
-            if(arr[i] == arr[i + 1]) cnt++;
+        long long cnt = 1;
+        for(long long i = 0; i < arr.size(); i++){
+            if(arr[i] == arr[i + 1]) cnt++; //counting number of repeating letters for first string
             else{
-                s.push_back(make_pair(arr[i], cnt));
+                s.push_back(make_pair(arr[i], cnt)); //storing count of each letter
                 cnt = 1;
             }
         }
 
         cnt = 1;
-        for(ll i = 0; i < brr.size(); i++){
-            if(brr[i] == brr[i + 1]) cnt++;
+        for(long long i = 0; i < brr.size(); i++){
+            if(brr[i] == brr[i + 1]) cnt++; //counting number of repeating letters for second string
             else{
-                t.push_back(make_pair(brr[i], cnt));
+                t.push_back(make_pair(brr[i], cnt)); //storing count for each letter
                 cnt = 1;
             }
         }
-
+        //if there is different letter in one of the string which is not present in other string
         if(s.size() != t.size()){
             cout << "NO" << endl;
             continue;
         }
 
         bool ck = true;
-        for(ll i = 0; i < s.size(); i++){
+        for(long long i = 0; i < s.size(); i++){
+        //checking if letters are same in both strings and count in first string is less than or equal to that of secong string
             if(s[i].first == t[i].first && s[i].second <= t[i].second) continue;
             else {
                 cout << "NO" << endl;
@@ -70,11 +51,13 @@ int main()
             }
         }
 
-        if(ck == true) cout << "YES" << endl;
+        if(ck == true) 
+     cout << "YES" << endl;
     }
 }
 
-2) 
+2)Simran the prankster-
+
 #include <cmath>
 #include <cstdio>
 #include <vector>
@@ -82,87 +65,50 @@ int main()
 #include <iostream>
 #include <algorithm>
 using namespace std;
-int z=0;
-int total = 0;
 
-int add(int a , int b)
-{
-    return (a+b);
-}
+int n;
+long long int x;
 
-int substract(int a, int b)
+bool compute(int a[], int i, long double val)
 {
-    return (a-b);
-}
-
-int mult(int a, int b)
-{
-    return (a * b);
-}
-
-int divide(int a, int b)
-{
-    if(b != 0)
-        return (a/b);
-    else
-        return 0;  
-}
-
-void Perform(int* result, int first, int second, int index, int target)
-{
-    if(target == first && index == total)//-1)
+    if(i==n) // if last element is reached, check result equality
     {
-        z = 1;
-        return;
+        if(val==(long double)x)
+            return true;
+        else
+            return false;
     }
-    if(index >= total  || z == -1)
-        return;
-    if(z==0)// && index != total-1)
-    {
-        Perform(result, add(first, second), (index+1 >= total)?0:result[index+1], index+1, target);
-        Perform(result, substract(first, second), (index+1 >= total)?0:result[index+1], index+1, target);
-        if(second != 0)
-            Perform(result, mult(first, second), (index+1 >= total)?0:result[index+1], index+1, target);
-        if(second != 0)
-            Perform(result, divide(first, second), (index+1 >= total)?0:result[index+1], index+1, target);
-    }
+    bool res;
+    if(a[i]==0) // try only (+ or -) and *
+        res=compute(a,i+1,val)||compute(a,i+1,0);
+    else // try all operations
+        res=compute(a,i+1,val+a[i])||compute(a,i+1,val-a[i])||compute(a,i+1,val*a[i])||compute(a,i+1,val/((long double)(a[i])));
+    return res;
 }
-
 
 int main()
 {
-   int t,i;
-   int n,k,j;
-   vector<string> result;
-   cin>>t;
-   string test[t];
-   for(i=0;i<t;i++)
-   {
-       z= 0;
-      cin>>n>>k;
-      int a[n];
-      for(j=0;j<n;j++)
-      {
-          cin>>a[j];
-        total = n;
-        Perform(a, a[0], a[1], 1, k);
-    
-        if(z==0 || z == -1)
-        {
-            test[i]="NO";
-        }
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n>>x;
+        int a[n];
+        for(int i=0;i<n;i++)
+            cin>>a[i];
+        long double v=a[0];
+        bool ans = compute(a,1,v); // recursively try combinations of operations to check for result equality
+        if(ans)
+            cout<<"YES\n";
         else
-            test[i]="YES";
-      }
-   }
-   for(i=0;i<t;i++)
-   {
-       cout<<test[i]<<endl;
-   }
-   return 0;
+            cout<<"NO\n";
+    }
+    return 0;
 }
 
+
 3) Catch the Psycopath-
+
 #include <cmath>
 #include <cstdio>
 #include <vector>
@@ -170,40 +116,52 @@ int main()
 #include <iostream>
 #include <algorithm>
 using namespace std;
-int j,p[1000];
+int p[10000];
 void dfs(int* a,int i,int s,int n,int k)
 {
-    if(i>=n || a[i]== -1)
+    if(i>=n || a[i]== -1)  //check if index is not in range of n and also if it is not an element
     {
        return;
     }
-    p[k++]=a[i];
-    if((2*i+1>=n || a[2*i+1]== -1) && (2*i+2>=n || a[2*i+2]== -1)&& s==a[i])
-    {
-        for(j=0;j<k;j++)
+   p[k++]=a[i];    //store element to print the path
+
+    //check if given node has no children and satisfies the sum condition
+    if((2*i+1>=n || a[2*i+1]== -1) && (2*i+2>=n || a[2*i+2]== -1) && s==a[i])
+    {   //print the correct path
+        for(int j=0;j<k;j++)
             cout<<p[j]<<" ";
-        cout<<endl;
-           // for(j=0;j<k;j++)
-           // p[j]=0;
-         //  p[j-1]=0; 
+        cout<<endl; 
     }
-    
-    
-    dfs(a,2*i+1,s-a[i],n,k);
-    dfs(a,2*i+2,s-a[i],n,k);
-    k--;
+ 
+    dfs(a,2*i+1,s-a[i],n,k);   //call for left child 
+    dfs(a,2*i+2,s-a[i],n,k);   //call for right child
+   k--;      //decrement k to pop one element from path
 }
 int main()
 {
-    int n,i,m;
+    int n,i,m,j=0;
     cin>>n;
-    int a[n];
+    int a[10000];
+
     for(i=0;i<n;i++)
-    {
-        cin>>a[i];
+    {   if(j>=1 && (j%2==1) && a[j/2]==-1) //check if parent is -1 then make this node as -1/null
+        { 
+          a[j++]=-1;
+        }
+        else if(j>=1 && (j%2==0) && a[(j/2)-1]==-1) ////check if parent is -1 then make this node as -1/null
+        {
+            a[j++]=-1;
+        }
+        else
+        {
+        cin>>a[j++];
+        }
+        if(a[j-1]== -1)  //if entry is -1 decrement i as it is not a correct entry
+        i--;
     }
     cin>>m;
-    dfs(a,0,m,n,0);
+    dfs(a,0,m,j,0);     //calling fucntion
+
     return 0;
 }
 
@@ -217,14 +175,13 @@ using namespace std;
 
 
 int main() {
-    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
      unsigned long long int n,u,up=1,down=0;
     cin>>n;
-    if(n==0)
+    if(n==0)     //if n is 0 then it is only one triangle
        cout<<"1";
    
     else{
-        while(n--)
+        while(n--)     //counting the number of up and down triangles
         {
             u=up;
             up=(up*3+down)%1000000007;

@@ -72,6 +72,7 @@ int main() {
 
 
 2) Button factory-
+
 #include <cmath>
 #include <cstdio>
 #include <vector>
@@ -86,14 +87,14 @@ int main() {
     cin>>P>>Q>>R>>S;
    
     if(R>=P && R<=Q)    //if R is in range of P and Q
-    {   if(Q-R <= S-R)  //checking if S is in range of P and Q
+    {   if(Q-R <= S-R)  //checking if S is also in range of P and Q
         cout<<Q-R;
         else
             cout<<S-R;
     }
     else if(P>=R && P<=S) //if P is in range of R and S
     {
-      if(S-P <= Q-P)       //checking if Q is in range of R and S
+      if(S-P <= Q-P)       //checking if Q is also in range of R and S
           cout<<S-P;
         else
             cout<<Q-P;
@@ -105,6 +106,7 @@ int main() {
 
 
 3) Lazy lad-
+
 #include <cmath>
 #include <cstdio>
 #include <vector>
@@ -121,10 +123,10 @@ int main() {
     {   count=0;
         s=0;
         cin>>a;
-        for(j=1;;j++)
+        for(j=1;;j++)      //loop for counting sum of boxes
         {
             s+=j;
-            if(s>a)
+            if(s>a)      //if sum if greater than 'a' then break
                 break;
             count++;
         }
@@ -139,6 +141,7 @@ int main() {
 
 
 4) Harsh prime-
+
 #include <cmath>
 #include <cstdio>
 #include <vector>
